@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-// import ReactS3 from 'react-S3';
 
 const config = {
         bucketName : 'googleaudio',
@@ -14,26 +12,6 @@ export default class HomePage extends Component {
   constructor(props) {
     super(props);
   }
-//  upload = (e) => {
-//        console.log(e.target.files[0]);
-//        ReactS3.upload(e.target.files[0],config)
-//        .then( (data)=>{
-//            console.log(data.location);
-//        })
-//        .catch( (err)=>{
-//            alert(err);
-//        })
-//        }
-  // upload(e) {
-  //       console.log(e.target.files[0]);
-  //       ReactS3.upload(e.target.files[0],config)
-  //       .then( (data)=>{
-  //           console.log(data.location);
-  //       })
-  //       .catch( (err)=>{
-  //           alert(err);
-  //       })
-  //       }
 
   render(){
         return (
