@@ -8,7 +8,7 @@ import boto3
 
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('video')
+table = dynamodb.Table('videos')
 
 
 class Userfiles(generics.CreateAPIView):
@@ -23,11 +23,11 @@ class Userfiles(generics.CreateAPIView):
                     'email': new_email
                 }
             )
-            video_info = response['Item']['video_files']
+            video_info = response['Item']['videos']
             print(video_info)
             context = {}
             context['email'] = new_email
             context['Info'] = video_info
             return Response(data=video_info, status=200)
         except:
-            return Response(data='Video files not loaded.', status=400)
+            return Response(data='Videos not loaded.', status=400)

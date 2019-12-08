@@ -14,33 +14,18 @@ import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined'
 import WarningTwoToneIcon from '@material-ui/icons/WarningTwoTone';
 import axios from "axios";
 import { UserContext } from "./UserProvider";
-import { AuthContext } from "./AuthProvider";
 import { AWS_credentials } from '../../AWS_keys';
 
 import ReactS3 from 'react-s3';
-import S3FileUpload from 'react-s3';
-import { deleteFile } from 'react-s3';
 import ReactAudioPlayer from 'react-audio-player';
 import ReactPlayer from 'react-player';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Collapse from '@material-ui/core/Collapse';
-
-
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import IconButton from '@material-ui/core/IconButton';
-import Input from "@material-ui/core/Input";
-
 
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -106,7 +91,7 @@ class Profile extends Component {
     this.state = {isLoggedIn: false,
                   files : [],
                   filteredFiles : [],
-                  selectedMenuItem : 'keyword'
+                  selectedMenuItem : 'class'
                 };
   }
 
@@ -114,14 +99,13 @@ class Profile extends Component {
     let user = this.context;
     delete localStorage.accessToken;
     user.setAuth(false);
-    // props.history.push('/');
   }
 
   filterSearchFiles = (e) => {
     let parameter = this.state.selectedMenuItem;
     console.log(parameter)
-    if (parameter == 'filename') {
-      let AudioName = e.target.value.toLowerCase();
+    if (parameter === 'filename') {
+      let videoName = e.target.value.toLowerCase();
       let filterFiles = [];
       let loginState = this.state.isLoggedIn;
       let allFiles = this.state.files;
@@ -130,7 +114,7 @@ class Profile extends Component {
         let filenameInFile = false;
         let currentFile = allFiles[i];
         let lowerString = currentFile['file_name'].toLowerCase();
-        if (lowerString.includes(AudioName)) {
+        if (lowerString.includes(videoName)) {
           filenameInFile = true;
         }
         if (filenameInFile) {
@@ -145,8 +129,8 @@ class Profile extends Component {
                     });
     }
     else{
-      let keywords = e.target.value.toLowerCase();
-      var keyArray = keywords.split(' ');
+      let classes = e.target.value.toLowerCase();
+      var keyArray = classes.split(' ');
       let loginState = this.state.isLoggedIn;
       let allFiles = this.state.files;
       let allFilterFiles = []
@@ -158,12 +142,12 @@ class Profile extends Component {
         // second layer, go through files
           let keywordInFile = false;
           let currentFile = allFiles[i];
-          for (let j = 0; j < currentFile['key_words'].length; j++) {
+          for (let j = 0; j < currentFile['classes'].length; j++) {
           // third  layer, go through key words in dynamoDB
-            let lowerString = currentFile['key_words'][j];
+            let lowerString = currentFile['classes'][j];
             // if not the last keyword, given keywords have to match
-            if (n!=keyArray.length-1){
-              if (lowerString==keyword) {
+            if (n !== keyArray.length-1){
+              if (lowerString === keyword) {
                 keywordInFile = true;
                 break;
               }
@@ -181,10 +165,10 @@ class Profile extends Component {
             filterFiles.push(currentFile);
           }
         }
-        if (n==0){
+        if (n === 0){
           allFilterFiles = filterFiles;
         }
-        if (filterFiles==[]){
+        if (filterFiles === []){
           allFilterFiles = [];
           break;
         }
@@ -197,7 +181,7 @@ class Profile extends Component {
       this.setState({isLoggedIn: loginState,
                      files: allFiles,
                      filteredFiles: allFilterFiles,
-                     selectedMenuItem:parameter});
+                     selectedMenuItem: parameter});
     }
   }
 
@@ -241,7 +225,7 @@ selectedMenu = (e) => {
     let user_email = user.state.userEmail;
     let new_email = user_email.replace('@', '__');
     const config = {
-      bucketName: 'googleaudio',
+      bucketName: 'miniproj3videos',
       dirName: new_email, /* optional */
       region: 'us-east-2',
       accessKeyId: AWS_credentials.accessKeyId,
@@ -250,13 +234,13 @@ selectedMenu = (e) => {
     return(
       console.log(e),
       console.log(e.target.files[0]),
+      alert("File processing...\n\n" +
+            "It will take some time to finish the object detection. " +
+            "Please click on the REFRESH button after a few minutes to see the updated file list."),
 
       ReactS3.uploadFile(e.target.files[0], config)
       .then((data)=>{
         console.log(data);
-        alert("File processing...\n\n" +
-            "It will take some time to finish the transcription. " +
-            "Please click on the REFRESH button after a few minutes to see the updated file list.");
       })
       .catch((err)=>{
         alert(err);
@@ -274,7 +258,7 @@ selectedMenu = (e) => {
 
     var s3 = new AWS.S3();
     var params = {
-      Bucket: 'googleaudio', /* required */
+      Bucket: 'miniproj3videos', /* required */
       Key: new_email + '/' + filename, /* required */
     };
 
@@ -321,17 +305,15 @@ selectedMenu = (e) => {
                     className={classes.input}
                     type = "file"
                     onChange = {this.Upload_S3}
-                    accept="video/*,audio/*"
+                    accept="video/*"
                   />
                   <label htmlFor="upload-button">
                     <Button
-                      // onClick={console.log(response)}
-                      // fullWidth
                       variant="contained"
                       component="span"
                       color="primary"
                     >
-                      Upload File
+                      Upload Video
                     </Button>
                   </label>
                  <br />
@@ -359,7 +341,7 @@ selectedMenu = (e) => {
                         onChange = {this.selectedMenu}
                         className={classes.textField}
                         select
-                        defaultValue="keyword"
+                        defaultValue="class"
                         value={ this.state.selectedMenuItem }
                         id="search-select"
                         label="Search by"
@@ -367,7 +349,7 @@ selectedMenu = (e) => {
                         variant="outlined"
                       >
                         <MenuItem value={"filename"}>Filename</MenuItem>
-                        <MenuItem value={"keyword"}>Keyword</MenuItem>
+                        <MenuItem value={"class"}>Class</MenuItem>
                       </TextField>
                     </Grid>
                     <Grid item xs={1}>
@@ -379,9 +361,6 @@ selectedMenu = (e) => {
 
                   <div>
                   {this.state.filteredFiles.map((file, index) => {
-                    let fileType = file['file_name'].split('.')[1]
-                    let isAudio = (fileType === "mp3" || fileType === 'wav' || fileType === 'wmv')
-
                     return (
                           <ExpansionPanel key={index} defaultExpanded={false}>
                             <ExpansionPanelSummary
@@ -400,21 +379,14 @@ selectedMenu = (e) => {
                                     spacing={1}
                               >
                                   <Grid>
-                                    {(isAudio) ?
-                                        <ReactAudioPlayer
-                                        //autoPlay
+                                    <ReactPlayer
+                                        url={'https://googleaudio.s3.us-east-2.amazonaws.com/' + new_email + '/' + file['file_name']}
+                                        className='react-player'
+                                        //playing
                                         controls
-                                        src={"https://googleaudio.s3.us-east-2.amazonaws.com/" + new_email + "/" + file['file_name']}
-                                        /> :
-                                        <ReactPlayer
-                                            url={'https://googleaudio.s3.us-east-2.amazonaws.com/' + new_email + '/' + file['file_name']}
-                                            className='react-player'
-                                            //playing
-                                            controls
-                                            width='100%'
-                                            height='100%'
-                                          />
-                                    }
+                                        width='100%'
+                                        height='100%'
+                                      />
                                   </Grid>
                                 <Grid>
                                  <br />
@@ -434,7 +406,7 @@ selectedMenu = (e) => {
                                       </Button>
                                     </Grid>
                                     <Grid>
-                                      <Typography color={"secondary"}> {"---->> Caution! The deletion on click CANNOT be reverted!"}</Typography>
+                                      <Typography color={"secondary"}> {"---->> Caution! The deletion on click the button CANNOT be reverted!"}</Typography>
                                     </Grid>
                                   </Grid>
                                   </Grid>
@@ -443,15 +415,6 @@ selectedMenu = (e) => {
                                 </Grid>
                                 <Grid>
                                   <ExpansionPanel style={{border: '1px solid rgba(0, 0, 0, .125)', boxShadow: 'none'}} defaultExpanded={false}>
-                                    <ExpansionPanelSummary
-                                      aria-controls="panel1a-content"
-                                      id="panel1a-header"
-                                    >
-                                      <Typography>{"Transcript"}</Typography>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails>
-                                      {file['transcript']}
-                                    </ExpansionPanelDetails>
                                   </ExpansionPanel>
                                   <ExpansionPanel style={{border: '1px solid rgba(0, 0, 0, .125)', boxShadow: 'none'}} defaultExpanded={false}>
                                     <ExpansionPanelSummary
@@ -495,7 +458,6 @@ selectedMenu = (e) => {
 
     return (
       <Container component="main" maxWidth="xl">
-        {/* <CssBaseline /> */}
         {content}
         <br />
         <br />

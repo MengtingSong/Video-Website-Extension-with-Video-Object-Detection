@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { AuthContext } from "./AuthProvider"
-import AuthProvider from "./AuthProvider"
 
 export default class Other extends Component {
   constructor(props) {
@@ -28,6 +27,3 @@ export default class Other extends Component {
     )
   }
 }
-
-// const wrapper = document.getElementById("app");
-// wrapper ? ReactDOM.render(<App />, wrapper) : null;

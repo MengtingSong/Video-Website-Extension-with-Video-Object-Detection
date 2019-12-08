@@ -6,7 +6,6 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Profile from "./components/Profile";
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom";
-import { AuthContext } from "./components/AuthProvider"
 import AuthProvider from "./components/AuthProvider"
 import UserProvider from "./components/UserProvider"
 import Other from "./components/Other"

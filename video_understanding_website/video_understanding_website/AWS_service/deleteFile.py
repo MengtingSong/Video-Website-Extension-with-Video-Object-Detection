@@ -9,7 +9,7 @@ from botocore.exceptions import ClientError
 
 def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('Audio')
+    table = dynamodb.Table('videos')
 
     if event:
         file_obj = event["Records"][0]
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
         response = table.query(
             KeyConditionExpression=Key('email').eq(user_email)
         )
-        file_list = response['Items'][0]['audio_files']
+        file_list = response['Items'][0]['videos']
         for file in file_list:
             if file['file_name'] == file_name:
                 file_list.remove(file)
@@ -32,13 +32,13 @@ def lambda_handler(event, context):
                     Key={
                         'email': user_email,
                     },
-                    UpdateExpression="set audio_files = :a",
+                    UpdateExpression="set videos = :a",
                     ExpressionAttributeValues={
                         ':a': file_list,
                     },
                     # ReturnValues="UPDATED_NEW"
                 )
-                print("Filelist updated!")
+                print("Videolist updated!")
                 break
 
     except ClientError as e:

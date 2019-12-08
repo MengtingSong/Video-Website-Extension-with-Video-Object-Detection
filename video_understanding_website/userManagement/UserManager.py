@@ -30,17 +30,6 @@ def verify_password(stored_password, provided_password):
     return pwdhash == stored_password
 
 
-# Helper class to convert a DynamoDB item to JSON.
-# class DecimalEncoder(json.JSONEncoder):
-#     def default(self, o):
-#         if isinstance(o, decimal.Decimal):
-#             if abs(o) % 1 > 0:
-#                 return float(o)
-#             else:
-#                 return int(o)
-#         return super(DecimalEncoder, self).default(o)
-
-
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 
 
@@ -64,8 +53,6 @@ class UserManager(object):
                 'password': self.password,
             }
         )
-        # print("AddUser succeeded:")
-        # print(json.dumps(response, indent=4, cls=DecimalEncoder))
 
     def success_login(self):
         table = dynamodb.Table('users')
@@ -88,7 +75,7 @@ class UserManager(object):
 
     # Check email validation 
     def check(self):  
-        return re.search(regex,self.email)
+        return re.search(regex, self.email)
 
 
 

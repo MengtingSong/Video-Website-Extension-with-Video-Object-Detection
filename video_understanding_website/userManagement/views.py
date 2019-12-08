@@ -2,7 +2,6 @@ from django.contrib.auth import login
 from .serializers import UserSerializer
 from .models import CustomUser
 from rest_framework.response import Response
-from rest_framework import generics
 from .UserManager import UserManager, hash_password
 from rest_framework import generics
 from rest_framework_simplejwt.tokens import RefreshToken

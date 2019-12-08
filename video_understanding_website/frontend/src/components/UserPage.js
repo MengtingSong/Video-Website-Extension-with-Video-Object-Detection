@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import {AWS_credentials} from "../../AWS_keys";
 
 const config = {
-        bucketName : 'googleaudio',
-        dirName: 'user2gmail.com',
+        bucketName : 'miniproj3videos',
+        dirName: 'test@gmail.com',
         region: 'us-east-2',
-        accessKeyId: 'AKIAVJ45X5OX3IQLFQ6D',
-        secretAccessKey: '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'
+        accessKeyId: AWS_credentials.accessKeyId,
+        secretAccessKey: AWS_credentials.secretAccessKey
         };
 
 export default class HomePage extends Component {
@@ -17,7 +18,7 @@ export default class HomePage extends Component {
         return (
             <div>
                 <h3>
-                    Upload an audio file
+                    Upload an video file
                 </h3>
                 <input
                 type = "file"
