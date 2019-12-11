@@ -102,3 +102,4 @@ yarn-error.log*
 package-lock.json
 .pem
 Video_Unnderstanding/frontend/AWS_keys.js
+/video_understanding_website/frontend/AWS_keys.js

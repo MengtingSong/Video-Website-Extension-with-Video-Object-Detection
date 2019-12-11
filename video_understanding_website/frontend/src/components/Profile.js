@@ -142,9 +142,9 @@ class Profile extends Component {
         // second layer, go through files
           let keywordInFile = false;
           let currentFile = allFiles[i];
-          for (let j = 0; j < currentFile['classes'].length; j++) {
+          for (let j = 0; j < currentFile['objects'].length; j++) {
           // third  layer, go through key words in dynamoDB
-            let lowerString = currentFile['classes'][j];
+            let lowerString = currentFile['objects'][j];
             // if not the last keyword, given keywords have to match
             if (n !== keyArray.length-1){
               if (lowerString === keyword) {
@@ -305,7 +305,7 @@ selectedMenu = (e) => {
                     className={classes.input}
                     type = "file"
                     onChange = {this.Upload_S3}
-                    accept="video/*"
+                    accept="video/mp4"
                   />
                   <label htmlFor="upload-button">
                     <Button
@@ -316,6 +316,9 @@ selectedMenu = (e) => {
                       Upload Video
                     </Button>
                   </label>
+                  <Typography component="h4">
+                      {"Only mp4 files within 1 minute and 30 megabytes can be accepted."}
+                  </Typography>
                  <br />
 
                   <Grid
@@ -349,7 +352,7 @@ selectedMenu = (e) => {
                         variant="outlined"
                       >
                         <MenuItem value={"filename"}>Filename</MenuItem>
-                        <MenuItem value={"class"}>Class</MenuItem>
+                        <MenuItem value={"objects"}>Objects</MenuItem>
                       </TextField>
                     </Grid>
                     <Grid item xs={1}>
@@ -380,7 +383,7 @@ selectedMenu = (e) => {
                               >
                                   <Grid>
                                     <ReactPlayer
-                                        url={'https://googleaudio.s3.us-east-2.amazonaws.com/' + new_email + '/' + file['file_name']}
+                                        url={'https://miniproj3videos.s3.us-east-2.amazonaws.com/' + new_email + '/' + file['file_name']}
                                         className='react-player'
                                         //playing
                                         controls
