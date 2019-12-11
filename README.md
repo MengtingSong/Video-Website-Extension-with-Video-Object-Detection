@@ -85,5 +85,8 @@ Overall, below is an overview of the program features from the perspective of th
 * Store the analysis result and user data into AWS DaynamoDB, queryable by our website.
 * The site will be hosted on AWS EC2.
 The diagram of whole project's structure is as followed.
-![Image text](https://github.com/MengtingSong/EC601_MiniProject_3/blob/master/project_architecture.jpeg)
+![Image text](https://github.com/MengtingSong/EC601_MiniProject_3/blob/master/project_architecture.png)
+
+## Issues not solved
+In completing the Lambda function for object detection, the Rekognition service always runs longer than 15 minutes which is the highest time limitaion of keep a Lambda function running set by AWS. This always causes the close of the function before the object detection process to be finished.
 
