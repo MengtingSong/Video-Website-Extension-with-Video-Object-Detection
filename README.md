@@ -4,7 +4,7 @@
 TBD
 
 ## Demo
-[![Watch the video]](https://youtu.be/zKVONcwYjqY)
+![[Watch the demo video]](https://youtu.be/zKVONcwYjqY)
 
 ## Deployment Instructions
 ### 1. Environment Requirements
