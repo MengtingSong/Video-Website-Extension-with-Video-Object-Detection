@@ -4,7 +4,7 @@
 TBD
 
 ## Demo
-[![Watch the video]](https://github.com/MengtingSong/EC601_MiniProject_3/blob/master/Demo.mp4)
+[![Watch the video]](https://youtu.be/zKVONcwYjqY)
 
 ## Deployment Instructions
 ### 1. Environment Requirements
