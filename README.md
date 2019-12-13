@@ -3,8 +3,8 @@
 ## Website (Hosted) Link
 TBD
 
-## Video Link
-TBD
+## Demo
+[![Watch the video]](https://github.com/MengtingSong/EC601_MiniProject_3/blob/master/Demo.mp4)
 
 ## Deployment Instructions
 ### 1. Environment Requirements
