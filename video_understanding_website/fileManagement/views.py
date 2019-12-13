@@ -25,6 +25,7 @@ class Userfiles(generics.CreateAPIView):
             )
             video_info = response['Item']['videos']
             print(video_info)
+            print(type(video_info))
             context = {}
             context['email'] = new_email
             context['Info'] = video_info

@@ -1,10 +1,11 @@
 {
   "name": "video_understanding",
   "version": "1.0.0",
-  "description": "(a webisite for video storage and object detection)",
+  "description": "(a website for video storage and object detection)",
   "main": "webpack.config.js",
   "dependencies": {
-    "webpacker": "^4.6.0"
+    "webpacker": "^4.6.0",
+    "prop-types": "latest"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.9.0"

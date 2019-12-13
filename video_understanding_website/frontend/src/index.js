@@ -9,7 +9,6 @@ import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom";
 import AuthProvider from "./components/AuthProvider"
 import UserProvider from "./components/UserProvider"
 import Other from "./components/Other"
-import HomePage from "./components/UserPage"
 
 const NotFound = () => {
     return (
@@ -34,7 +33,6 @@ const routing = (
             <Route path="/signUp" component={SignUp} />
             <Route path="/profile" component={Profile} />
             <Route path="/other" component={Other} />
-            <Route exact path="/homepage" component={HomePage} />
             <Route component={NotFound} />
         </Switch>
     </Router>

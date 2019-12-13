@@ -36,7 +36,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" to="/">
-        Google Audio
+        Video Object Detection
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -91,7 +91,7 @@ class Profile extends Component {
     this.state = {isLoggedIn: false,
                   files : [],
                   filteredFiles : [],
-                  selectedMenuItem : 'class'
+                  selectedMenuItem : 'keyword'
                 };
   }
 
@@ -100,6 +100,7 @@ class Profile extends Component {
     delete localStorage.accessToken;
     user.setAuth(false);
   }
+
 
   filterSearchFiles = (e) => {
     let parameter = this.state.selectedMenuItem;
@@ -133,7 +134,7 @@ class Profile extends Component {
       var keyArray = classes.split(' ');
       let loginState = this.state.isLoggedIn;
       let allFiles = this.state.files;
-      let allFilterFiles = []
+      let allFilterFiles = [];
       for (let n = 0; n < keyArray.length; n++) {
       // first layer, go through given key words
         let keyword = keyArray[n];
@@ -142,9 +143,9 @@ class Profile extends Component {
         // second layer, go through files
           let keywordInFile = false;
           let currentFile = allFiles[i];
-          for (let j = 0; j < currentFile['objects'].length; j++) {
+          for (let j = 0; j < currentFile['classes'].length; j++) {
           // third  layer, go through key words in dynamoDB
-            let lowerString = currentFile['objects'][j];
+            let lowerString = currentFile['classes'][j].toLowerCase();
             // if not the last keyword, given keywords have to match
             if (n !== keyArray.length-1){
               if (lowerString === keyword) {
@@ -185,6 +186,7 @@ class Profile extends Component {
     }
   }
 
+
 selectedMenu = (e) => {
   let loginState = this.state.isLoggedIn;
   let allFiles = this.state.files;
@@ -200,6 +202,7 @@ selectedMenu = (e) => {
   this.filterSearchFiles;
 }
 
+
   PullFiles = async () => {
     let user = this.context;
     let currentComponent = this;
@@ -207,7 +210,8 @@ selectedMenu = (e) => {
     return (
     axios.post("http://127.0.0.1:8000/home/", {user_email: user.state.userEmail})
           .then(function (response) {
-            if (Array.isArray(response['data'])) {
+              if (Array.isArray(response['data'])) {
+                console.log("loading...");
               currentComponent.setState({isLoggedIn: user.state.isAuthenticated,
                                          files: response['data'],
                                          filteredFiles: response['data'],
@@ -235,7 +239,7 @@ selectedMenu = (e) => {
       console.log(e),
       console.log(e.target.files[0]),
       alert("File processing...\n\n" +
-            "It will take some time to finish the object detection. " +
+            "It will take 5 minutes to finish the object detection. " +
             "Please click on the REFRESH button after a few minutes to see the updated file list."),
 
       ReactS3.uploadFile(e.target.files[0], config)
@@ -271,9 +275,11 @@ selectedMenu = (e) => {
     )
   }
 
+
   refreshFiles = async (e) => {
     await this.PullFiles();
   }
+
 
   async componentDidMount() {
     let user = this.context;
@@ -317,7 +323,7 @@ selectedMenu = (e) => {
                     </Button>
                   </label>
                   <Typography component="h4">
-                      {"Only mp4 files within 1 minute and 30 megabytes can be accepted."}
+                      {"Only mp4 files under 1 minute AND 30 megabytes can be accepted."}
                   </Typography>
                  <br />
 
@@ -344,7 +350,7 @@ selectedMenu = (e) => {
                         onChange = {this.selectedMenu}
                         className={classes.textField}
                         select
-                        defaultValue="class"
+                        defaultValue="keyword"
                         value={ this.state.selectedMenuItem }
                         id="search-select"
                         label="Search by"
@@ -352,7 +358,7 @@ selectedMenu = (e) => {
                         variant="outlined"
                       >
                         <MenuItem value={"filename"}>Filename</MenuItem>
-                        <MenuItem value={"objects"}>Objects</MenuItem>
+                        <MenuItem value={"keyword"}>Object</MenuItem>
                       </TextField>
                     </Grid>
                     <Grid item xs={1}>
@@ -365,7 +371,9 @@ selectedMenu = (e) => {
                   <div>
                   {this.state.filteredFiles.map((file, index) => {
                     return (
-                          <ExpansionPanel key={index} defaultExpanded={false}>
+                          <ExpansionPanel key={index}
+                                          defaultExpanded={false}
+                                          style={{border: '1px solid rgba(0, 0, 0, .125)', boxShadow: 'none'}}>
                             <ExpansionPanelSummary
                               expandIcon={<ExpandMoreIcon />}
                               aria-controls="panel1a-content"
@@ -373,7 +381,6 @@ selectedMenu = (e) => {
                               <Typography>{file['file_name']}</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
-
                               <Grid
                                     container
                                     direction="column"
@@ -387,8 +394,8 @@ selectedMenu = (e) => {
                                         className='react-player'
                                         //playing
                                         controls
-                                        width='100%'
-                                        height='100%'
+                                        // width='100%'
+                                        // height='100%'
                                       />
                                   </Grid>
                                 <Grid>
@@ -418,16 +425,14 @@ selectedMenu = (e) => {
                                 </Grid>
                                 <Grid>
                                   <ExpansionPanel style={{border: '1px solid rgba(0, 0, 0, .125)', boxShadow: 'none'}} defaultExpanded={false}>
-                                  </ExpansionPanel>
-                                  <ExpansionPanel style={{border: '1px solid rgba(0, 0, 0, .125)', boxShadow: 'none'}} defaultExpanded={false}>
                                     <ExpansionPanelSummary
                                       aria-controls="panel1a-content"
                                       id="panel1a-header"
                                     >
-                                      <Typography>{"Keywords"}</Typography>
+                                      <Typography>{"Objects"}</Typography>
                                     </ExpansionPanelSummary>
                                     <ExpansionPanelDetails>
-                                      {file['key_words'].join(', ')}
+                                      {file['classes'].join(', ')}
                                     </ExpansionPanelDetails>
                                   </ExpansionPanel>
                                 </Grid>
