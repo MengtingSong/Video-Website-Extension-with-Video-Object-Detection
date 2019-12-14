@@ -1,8 +1,5 @@
 # EC601_MiniProject_3 - Video Object Detection Website
 
-## Website (Hosted) Link
-TBD
-
 ## Demo
 [![Watch the demo video]](https://youtu.be/zKVONcwYjqY)
 
