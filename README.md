@@ -41,9 +41,6 @@ High-level goals including:
 * Video object detection will be used by people who want to store and organize video files in a user-searchable manner on the cloud. 
 * These people include journalists, academic researchers, and reporters who need to be able to search through the files with detected classes.
 
-## User Stories
-TBD
-
 ## Scope and Features Of The Project
 This project is not built from scratch. I will build on this project on the foundation of one of my other project working together with the other three teammates (historical commits to the project can be checked). In this project, the major work is as below:
 - Adjust the previous project code to fit with the new project goal
